@@ -14,5 +14,5 @@ const Filter = () => {
     </FilterContainer>
   );
 };
-console.log(filter);
+
 export default Filter;
