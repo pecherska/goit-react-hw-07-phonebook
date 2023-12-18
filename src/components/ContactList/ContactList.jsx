@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { ContactListElements, DeleteContactBtn } from './ContactList.styled';
-
 import { deleteContact, fetchContacts } from 'components/store/operations';
 import { useEffect } from 'react';
 import {
