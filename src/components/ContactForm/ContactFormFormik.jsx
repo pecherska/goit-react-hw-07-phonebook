@@ -4,16 +4,18 @@ import { nanoid } from 'nanoid';
 
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContactsAction } from 'components/store/contacts/contactsSlice';
+
 import { toast } from 'react-toastify';
+import { addContact } from 'components/store/operations';
+import { selectContacts } from 'components/store/selectors';
 
 const schema = yup.object().shape({
   name: yup
     .string()
     .min(2, 'Too Short!')
-    .max(5, 'Too Long!')
+    .max(30, 'Too Long!')
     .required('Required name'),
-  number: yup
+  phone: yup
     .number()
     .typeError("That doesn't look like a phone number")
     .positive("A phone number can't start with a minus")
@@ -24,7 +26,7 @@ const schema = yup.object().shape({
 
 export const ContactFormFormik = () => {
   const dispatch = useDispatch();
-  const { contacts } = useSelector(state => state.contacts);
+  const contacts = useSelector(selectContacts);
   const nameId = nanoid();
   const numberId = nanoid();
 
@@ -37,14 +39,15 @@ export const ContactFormFormik = () => {
       toast.warn(`${values.name} is already in contacts!`);
       return;
     }
-    dispatch(addContactsAction(values));
+
+    dispatch(addContact(values));
     actions.setSubmitting(false);
     actions.resetForm();
   };
 
   return (
     <Formik
-      initialValues={{ name: '', number: '' }}
+      initialValues={{ name: '', phone: '' }}
       validationSchema={schema}
       onSubmit={handleSubmit}
     >
@@ -66,10 +69,10 @@ export const ContactFormFormik = () => {
           <FormInput
             id={numberId}
             type="tel"
-            name="number"
+            name="phone"
             pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
           ></FormInput>
-          <ErrorMessage name="number" component="div" />
+          <ErrorMessage name="phone" component="div" />
         </label>
 
         <FormButton type="submit">Add contact</FormButton>
