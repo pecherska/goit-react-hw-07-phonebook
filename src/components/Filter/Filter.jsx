@@ -7,7 +7,6 @@ const Filter = () => {
   const filter = useSelector(selectFilter);
   const dispatch = useDispatch();
   const onChange = e => {
-    console.log(e);
     dispatch(filterAction(e.target.value));
   };
   return (
